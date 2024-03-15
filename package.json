@@ -1,0 +1,41 @@
+{
+  "name": "userbackend",
+  "version": "1.0.0",
+  "description": "NodeAuth: Streamlined user creation and secure login for Node.js",
+  "main": "app.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "nodemon ./src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Node.js",
+    "User",
+    "authentication",
+    "Login",
+    "system",
+    "User",
+    "creation",
+    "Password",
+    "encryption",
+    "Session",
+    "management",
+    "Express.js",
+    "MongoDB",
+    "Bcrypt"
+  ],
+  "author": "Aakash Singh",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.3",
+    "express-winston": "^4.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.4.0",
+    "mongoose": "^8.2.1",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.0",
+    "winston": "^3.12.0"
+  }
+}
