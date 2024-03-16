@@ -1,22 +1,34 @@
 const jwt = require('jsonwebtoken');
 const Utill = require('../utils/utils');
-
+const User = require('../models/user')
 const verifyToken = (req, res, next) => {
-    const bearer = req.headers.authorization;
+    const bearerToken = req.headers.authorization;
 
-    if (!bearer) {
-        return res.status(401).json({ message: 'Authorization header missing' });
-    }
-
-    try {
-        const token = bearer.split(' ')[1];
-        const decoded = Utill.verifyToken(token);
-        req.user = decoded.user;
-        next();
-    } catch (error) {
-        return res.status(403).json({ message: 'Invalid token' });
+    if (bearerToken && bearerToken.startsWith('Bearer ')) {
+        const token = bearerToken.split(' ')[1];
+        try {
+            const decoded = Utill.verifyToken(token);
+            req.user = decoded.user;
+            next();
+        } catch (error) {
+            return res.status(403).json({ message: 'Invalid JWT token' });
+        }
+    } else {
+        if (req.session && req.session.passport) {
+            User.findOne({ _id: req.session.passport.user }).then((user)=>{
+                req.user = user;
+                next();
+            }).catch((error)=>{
+                logger.log(error)
+                req.user = req.session.passport.user;
+                next();
+            })
+        } else {
+            return res.status(401).json({ message: 'Unauthorized' });
+        }
     }
 };
+
 
 const requireAdmin = (req, res, next) => {
     try {

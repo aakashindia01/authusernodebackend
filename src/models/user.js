@@ -15,6 +15,14 @@ const userSchema = new mongoose.Schema({
         required: false
     },
     isAdmin: {
+        type: Boolean,
+        required: false
+    },
+    googleId:{
+        type: String,
+        required: false
+    },
+    profilePhoto:{
         type: String,
         required: false
     }

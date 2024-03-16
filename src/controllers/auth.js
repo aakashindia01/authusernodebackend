@@ -22,6 +22,15 @@ const login = async (req, res) => {
     }
 }
 
+const redirect =async (req, res) => {
+    try {
+       res.redirect('/api/auth/home')
+    } catch (error) {
+        logger.error(error);
+        res.status(500).json({ "message": "Internal server error" });
+    }
+}
+
 const register = async (req, res) => {
     try {
         const { name, email, password, isAdmin } = req.body;
@@ -41,7 +50,7 @@ const register = async (req, res) => {
 
 const getUser = async (req, res) => {
     try {
-        const user = await User.findOne({ email: req.user.email })
+        const user = await User.findOne({ _id: req.user._id })
         if (!user) {
             return res.status(404).json({ "message": "User Not Found!" });
         }
@@ -66,4 +75,16 @@ const deleteUser = async (req, res) => {
     res.status(200).json({ message: 'Users deleted successfully' });
 }
 
-module.exports = { login, register, getUser, deleteUser };
+const home = async (req, res)=> {
+    try {
+        const user = await User.findOne({ _id: req.user.id })
+        if (!user) {
+            return res.status(404).json({ "message": "User Not Found!" });
+        }
+        return res.status(200).json({ "msg" : `Welcome To Home : ${user._doc.name}` });
+    } catch (error){
+        res.status(500).json({ "message": "Internal server error" });
+    }
+}
+
+module.exports = { login, redirect, home, register, getUser, deleteUser };
