@@ -8,10 +8,14 @@ const logger = require('./utils/logger')
 const connectDb = require('./utils/db');
 const passport = require('passport');
 const session = require('express-session')
-
+const cors = require('cors');
 
 const app = express();
 
+app.use(cors({
+    origin: 'http://localhost:4200', // Allow requests from Angular app
+    credentials: true // Allow credentials (cookies)
+  }));
 app.use(session({
     secret: process.env.secret,
     resave: true,

@@ -12,6 +12,7 @@ const login = async (req, res) => {
         const comparePassword = await Utill.comparePassword(password, user.password);
         if(comparePassword){
             const token = Utill.generateJwtToken({...user._doc});
+            req.session.token = token;
             return res.status(200).json({ token });
         }
         res.status(401).json({ "message": "Invalid Password" });
@@ -20,6 +21,11 @@ const login = async (req, res) => {
         logger.error(error);
         res.status(500).json({ "message": "Internal server error" });
     }
+}
+
+const logout = async (req, res) => {
+    res.setHeader('Clear-Site-Data', '"cookies", "storage", "cache"');
+    return res.status(200).json({ "msg": "User logout successfully!" });
 }
 
 const redirect =async (req, res) => {
@@ -87,4 +93,4 @@ const home = async (req, res)=> {
     }
 }
 
-module.exports = { login, redirect, home, register, getUser, deleteUser };
+module.exports = { login, logout, redirect, home, register, getUser, deleteUser };
