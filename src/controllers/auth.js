@@ -23,6 +23,18 @@ const login = async (req, res) => {
     }
 }
 
+const isloggedin = async (req, res) => {
+    try {
+        if (req.user) {
+            return res.status(200).json({ "isloggedin": true });
+        }
+        return res.status(200).json({ "isloggedin": false });
+    } catch (error) {
+        logger.error(error);
+        res.status(500).json({ "message": "Internal server error" });
+    }
+}
+
 const logout = async (req, res) => {
     res.setHeader('Clear-Site-Data', '"cookies", "storage", "cache"');
     return res.status(200).json({ "msg": "User logout successfully!" });
@@ -30,7 +42,7 @@ const logout = async (req, res) => {
 
 const redirect =async (req, res) => {
     try {
-       res.redirect('/api/auth/home')
+        res.redirect('http://localhost:4200/home');
     } catch (error) {
         logger.error(error);
         res.status(500).json({ "message": "Internal server error" });
@@ -93,4 +105,4 @@ const home = async (req, res)=> {
     }
 }
 
-module.exports = { login, logout, redirect, home, register, getUser, deleteUser };
+module.exports = { login, logout, isloggedin, redirect, home, register, getUser, deleteUser };
